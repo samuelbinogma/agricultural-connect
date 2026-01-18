@@ -5,28 +5,22 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import './styles/main.css'
 
-function MainLayout() {
-    return (
-        <>
-            <Navbar />
-            <main className='container'>
-                <Outlet />
-            </main>
-        </>
-    );
-}
 
 function App() {
 
     return (
-        <Routes>
-            <Route path='/' element={<Home />} />
+        <>
+            <Navbar />
+            
+            <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
 
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-
-            <Route path='*' element={<div>404 - Page Not Found</div>} />
-        </Routes>
+                <Route path='*' element={<div>404 - Page Not Found</div>} />
+            </Routes>
+        </>
+        
     )
 }
 
