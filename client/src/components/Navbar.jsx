@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import logo from '../asset/AgriConnectLogo1.png';
 
 function Navbar() {
@@ -5,18 +6,18 @@ function Navbar() {
         <header className="navbar">
             <div className="container">
                 <div className="nav-content">
-                    <a href='/' className="logo">
+                    <Link to='/' className="logo">
                         <img src={logo} alt="logo" className='logo-image'/>
                         <span className="logo-text">AgriConnect</span>
-                    </a>
+                    </Link>
 
                     <nav className="nav-links">
-                        <a href="#">Home</a>
-                        <a href="#">Browse Products</a>
-                        <a href="#">How it Works</a>
+                        <Link to="/">Home</Link>
+                        <Link to="/products">Browse Products</Link>
+                        <Link to="/how-it-works">How it Works</Link>
                         <div className="auth-buttons">
-                            <a href="#" className='btn btn-outline'>Login</a>
-                            <a href="#" className='btn btn-primary'>Sign Up</a>
+                            <Link to="/login" className='btn btn-outline'>Login</Link>
+                            <Link to="/register" className='btn btn-primary'>Sign Up</Link>
                         </div>
                     </nav>
                 </div>

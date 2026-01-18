@@ -1,18 +1,32 @@
-import { useState } from 'react'
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
 import './styles/main.css'
 
+function MainLayout() {
+    return (
+        <>
+            <Navbar />
+            <main className='container'>
+                <Outlet />
+            </main>
+        </>
+    );
+}
+
 function App() {
-    const [count, setCount] = useState(0)
 
     return (
-        <div className="app">
-            <Navbar />
-            <main>
-                <Home />
-            </main>
-        </div>
+        <Routes>
+            <Route path='/' element={<Home />} />
+
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+
+            <Route path='*' element={<div>404 - Page Not Found</div>} />
+        </Routes>
     )
 }
 
