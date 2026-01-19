@@ -174,10 +174,12 @@ h2 {
 .logo-image {
     width: auto;
     height: clamp(42px, 10vw, 60px);
+    opacity: 0.6;
 }
 
 .logo:hover .logo-image {
     transform: scale(1.05);
+    opacity: 1.0;
 } 
 
 .logo-text {
