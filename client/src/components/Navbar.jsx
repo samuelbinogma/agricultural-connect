@@ -17,7 +17,7 @@ function Navbar() {
                         <Link to="/how-it-works">How it Works</Link>
                         <div className="auth-buttons">
                             <Link to="/login" className='btn btn-outline'>Login</Link>
-                            <Link to="/register" className='btn btn-primary'>Sign Up</Link>
+                            <Link to="/select-role" className='btn btn-primary'>Sign Up</Link>
                         </div>
                     </nav>
                 </div>

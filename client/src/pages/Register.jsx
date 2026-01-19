@@ -16,7 +16,7 @@ export default function Register() {
 
             <div style={{ textAlign: 'center', padding: '1rem', background: '#e8f5e9' }}>
                 <span className="role-badge">
-                    Registering as: {role === 'farmer' ? 'Farmer' : 'Customer'}
+                    Registering as a {role === 'farmer' ? 'Farmer' : 'Customer'}
                 </span>
             </div>
             <AuthForm 

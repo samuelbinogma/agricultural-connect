@@ -90,7 +90,7 @@ export default function AuthForm({ type = 'login', role = 'customer', onSubmit})
                     </div>
 
                     {isFarmer && isRegister && (
-                        <div className="formgroup">
+                        <div className="form-group">
                             <label htmlFor="farmName">Farm Name (optional)</label>
                             <input type="text" 
                                 id='farmName'
