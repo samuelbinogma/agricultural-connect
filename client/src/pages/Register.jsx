@@ -1,17 +1,30 @@
 import AuthForm from '../components/AuthForm';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Register() {
+    const [searchParams] = useSearchParams();
+    const role = searchParams.get('role') || 'customer';
+
     const handleRegister = (data) => {
-        console.log('Registration data:', data);
+        console.log('Registration data:', {...data, role});
         // TODO: send to backend
-        alert('Registration submitted! (demo)');
+        alert(`Registration as ${role} submitted! (demo)`);
     };
 
     return (
-        <AuthForm 
-            type="register" 
-            // role="farmer" or "customer" - can come from previous page
-            onSubmit={handleRegister} 
-        />
+        <>
+
+            <div style={{ textAlign: 'center', padding: '1rem', background: '#e8f5e9' }}>
+                <span className="role-badge">
+                    Registering as: {role === 'farmer' ? 'Farmer' : 'Customer'}
+                </span>
+            </div>
+            <AuthForm 
+                type="register" 
+                role={role}
+                onSubmit={handleRegister} 
+            />
+        </>
+        
     );
 }
