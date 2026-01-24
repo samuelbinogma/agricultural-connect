@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import axios from 'axios';
+import { AuthContext } from '../context/AuthContext';
 
-export default function AuthForm({ type = 'login', role = 'customer', onSubmit}) {
+export default function AuthForm({ type = 'login', role = 'customer' }) {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         name: '',
         phone: '',
+        farmName: '',
     });
+
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const { register, login } = useContext(AuthContext);
     
     const isRegister = type === 'register';
     const isFarmer = role === 'farmer';
@@ -15,26 +24,61 @@ export default function AuthForm({ type = 'login', role = 'customer', onSubmit})
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        onSubmit(formData);
+        setError('');
+        setSuccess('');
+        setLoading(true);
+
+        try {
+            let response;
+
+            if (isRegister) {
+                // Sending registration data to the backend
+                response = await register(formData, role);
+                setSuccess('Registration successful!, You can now log in');
+
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 2000);
+            } else {
+                // Sending Login data to backend
+                response = await login(formData, role);
+                setSuccess('Login successful!');
+                // Redirect user after login based on role
+                if (response.user.role === 'farmer') {
+                    window.location.href = '/dashboard';
+                } else {
+                    window.location.href = '/browse';
+                }
+            }
+        } catch (error) {
+            setError(err.message || 'Something went wrong. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
-
-    const title = isRegister
-        ? (isFarmer ? 'Create Farmer Account' : 'Create Customer Account')
-        : (isFarmer ? 'Farmer Login' : 'Customer Login');
-
-    const subtitle = isRegister 
-        ? 'Join our direct farm-to-table community'
-        : 'Welcome back! Login to continue';
 
     return (
         <div className="auth-container">
             <div className="auth-card">
                 <div className="auth-header">
-                    <h1>{title}</h1>
-                    <p>{subtitle}</p>
+                    <h1>
+                        {isRegister
+                        ? isFarmer ? 'Create Farmer Account' : 'Create Customer Account'
+                        : isFarmer ? 'Farmer Login' : 'Customer Login'}
+                    </h1>
+                    <p>
+                        {isRegister
+                        ? 'Join our direct farm-to-table community'
+                        : isFarmer
+                        ? 'Access your farm dashboard, manage produce & orders'
+                        : 'Login to browse fresh produce & connect with farmers'}
+                    </p>
                 </div>
+
+                {error && <div className="error-message">{error}</div>}
+                {success && <div className="success-message">{success}</div>}
 
                 <form onSubmit={handleSubmit} className='auth-form'>
                     {isRegister && (
@@ -95,13 +139,19 @@ export default function AuthForm({ type = 'login', role = 'customer', onSubmit})
                             <input type="text" 
                                 id='farmName'
                                 name='farmName'
+                                value={formData.farmName}
+                                onChange={handleChange}
                                 placeholder='Sunshine Farm'
                             />
                         </div>
                     )}
 
-                    <button type='submit' className='btn btn-primary btn-full'>
-                        {isRegister ? 'Create Acoount' : 'Log In'}
+                    <button type='submit' className='btn btn-primary btn-full' disabled={loading}>
+                        {loading
+                            ? 'Please wait...'
+                            : isRegister
+                            ? 'Create Account'
+                            : 'Log In'}
                     </button>
                 </form>
 
@@ -112,7 +162,7 @@ export default function AuthForm({ type = 'login', role = 'customer', onSubmit})
                         </p>
                     ) : (
                         <p>
-                            Don't have an account? <a href='/register'>Sign Up</a>
+                            Don't have an account? <a href='/select-role'>Sign Up</a>
                         </p>
                     )}
                 </div>
