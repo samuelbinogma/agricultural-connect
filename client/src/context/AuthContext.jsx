@@ -31,11 +31,15 @@ export const AuthProvider = ({ children }) => {
     const login = async (data, role) => {
         try {
             const res = await axios.post('http://localhost:5000/api/auth/login', data);
+
             localStorage.setItem('token', res.data.token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+
             setUser(res.data.user);
+
             return res.data;
         } catch (err) {
-            throw err.response?.data || { message: 'Login failed' };
+            throw new Error(err.response?.data?.message || 'Login failed');
         }
     };
 

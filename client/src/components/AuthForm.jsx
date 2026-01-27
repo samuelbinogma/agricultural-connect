@@ -36,24 +36,30 @@ export default function AuthForm({ type = 'login', role = 'customer' }) {
             if (isRegister) {
                 // Sending registration data to the backend
                 response = await register(formData, role);
-                setSuccess('Registration successful!, You can now log in');
+                setSuccess('Registration successful!, Redirecting to login...');
 
                 setTimeout(() => {
                     window.location.href = '/login';
                 }, 2000);
             } else {
                 // Sending Login data to backend
-                response = await login(formData, role);
-                setSuccess('Login successful!');
+                response = await login(formData);
+                setSuccess('Login successful! Redirecting...');
+
                 // Redirect user after login based on role
-                if (response.user.role === 'farmer') {
+
+                const userRole = response.user.role
+
+                if (userRole === 'farmer') {
                     window.location.href = '/dashboard';
-                } else {
+                } else if (userRole === 'customer') {
                     window.location.href = '/browse';
+                } else {
+                    setError('Unknown role. Contact Support')
                 }
             }
         } catch (error) {
-            setError(err.message || 'Something went wrong. Please try again.');
+            setError(error.message || 'Something went wrong. Please try again.');
         } finally {
             setLoading(false);
         }
