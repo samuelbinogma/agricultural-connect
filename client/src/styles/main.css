@@ -216,7 +216,7 @@ h2 {
 .auth-section {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1.5rem;
 }
 
 /* Logged-in user menu */
@@ -224,11 +224,13 @@ h2 {
     display: flex;
     align-items: center;
     gap: 1.2rem;
+    flex-wrap: wrap;
 }
 
 .user-greeting {
     font-weight: 500;
     color: #2d3748;
+    white-space: nowrap;
 }
 
 .user-greeting strong {
@@ -237,7 +239,7 @@ h2 {
 
 /* Role badge */
 .role-badge {
-    padding: 0.35rem 1rem;
+    padding: 0.35rem rem;
     border-radius: 999px;
     font-size: 0.85rem;
     font-weight: 600;
@@ -254,20 +256,23 @@ h2 {
 }
 
 /* Logout button */
-.logout-btn {
-    background: #e53e3e;
-    color: white;
+.logout-link {
+    background: none;
     border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
+    color: #e53e3e;                
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s;
+    padding: 0.5rem 0;             
+    transition: all 0.2s ease;
 }
 
-.logout-btn:hover {
-    background: #c53030;
+.logout-link:hover,
+.logout-link:focus {
+    color: #c53030;                
+    text-decoration: underline;    
+    transform: translateY(-1px);   
 }
-
 /* Mobile adjustments (basic) */
 @media (max-width: 768px) {
     .nav-links {
@@ -278,6 +283,10 @@ h2 {
         flex-direction: column;
         align-items: flex-end;
         gap: 0.8rem;
+    }
+
+    .logout-link {
+        padding: 0.6rem 0;
     }
     
     .role-badge {

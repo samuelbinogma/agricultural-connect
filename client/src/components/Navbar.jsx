@@ -31,7 +31,7 @@ function Navbar() {
                                         {user.role === 'farmer' ? 'Farmer' : 'Customer'}
                                     </span>
 
-                                    <button onClick={logout} className='btn btn-outline logout-btn'>
+                                    <button onClick={logout} className='logout-link'>
                                         Logout
                                     </button>
                                 </div>

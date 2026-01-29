@@ -43,12 +43,12 @@ export default function AuthForm({ type = 'login', role = 'customer' }) {
                 }, 2000);
             } else {
                 // Sending Login data to backend
-                response = await login(formData);
+                const userData = await login(formData);
                 setSuccess('Login successful! Redirecting...');
 
                 // Redirect user after login based on role
 
-                const userRole = response.user.role
+                const userRole = userData?.role;
 
                 if (userRole === 'farmer') {
                     window.location.href = '/dashboard';
