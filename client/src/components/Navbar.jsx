@@ -37,12 +37,15 @@ function Navbar() {
                                 </div>
                             ) : (
                                 <>
-                                    <Link to="/login" className="btn btn-outline">
-                                        Login
-                                    </Link>
-                                    <Link to="/select-role" className="btn btn-primary">
-                                        Sign Up
-                                    </Link>
+                                    <div className='auth-buttons'>
+                                        <Link to="/login" className="btn btn-outline">
+                                            Login
+                                        </Link>
+                                        <Link to="/select-role" className="btn btn-primary">
+                                            Sign Up
+                                        </Link>
+                                    </div>
+                                    
                                 </>
                             )}
                         </div>
