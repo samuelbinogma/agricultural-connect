@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
 import logo from '../asset/AgriConnectLogo1.png';
 
 function Navbar() {
+    const { user, logout } = useContext(AuthContext);
+
     return (
         <header className="navbar">
             <div className="container">
@@ -15,9 +19,32 @@ function Navbar() {
                         <Link to="/">Home</Link>
                         <Link to="/products">Browse Products</Link>
                         <Link to="/how-it-works">How it Works</Link>
-                        <div className="auth-buttons">
-                            <Link to="/login" className='btn btn-outline'>Login</Link>
-                            <Link to="/select-role" className='btn btn-primary'>Sign Up</Link>
+
+                        <div className="auth-sections">
+                            {user ? (
+                                <div className="user-menu">
+                                    <span className="user-greeting">
+                                        Welcome, <strong>{user.name}</strong>
+                                    </span>
+
+                                    <span className={`role-badge ${user.role}`}>
+                                        {user.role === 'farmer' ? 'Farmer' : 'Customer'}
+                                    </span>
+
+                                    <button onClick={logout} className='btn btn-outline logout-btn'>
+                                        Logout
+                                    </button>
+                                </div>
+                            ) : (
+                                <>
+                                    <Link to="/login" className="btn btn-outline">
+                                        Login
+                                    </Link>
+                                    <Link to="/select-role" className="btn btn-primary">
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </nav>
                 </div>
