@@ -9,10 +9,12 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if (token) {
+        const storedUser = localStorage.getItem('user');
+
+        if (token && storedUser) {
+            const parsedUser =JSON.parse(storedUser)
+            setUser(parsedUser)
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            // Optional: fetch user profile
-            setUser({ token }); // minimal
         }
         setLoading(false);
     }, []);
@@ -28,16 +30,19 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = async (data, role) => {
+    const login = async (data) => {
         try {
             const res = await axios.post('http://localhost:5000/api/auth/login', data);
 
             localStorage.setItem('token', res.data.token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
 
-            setUser(res.data.user);
+            const userData = res.data.user;
+            setUser(userData);
 
-            return res.data;
+            localStorage.setItem('user', JSON.stringify(userData))
+
+            return userData;
         } catch (err) {
             throw new Error(err.response?.data?.message || 'Login failed');
         }
@@ -45,7 +50,10 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        delete axios.defaults.headers.common['Authorization'];
         setUser(null);
+        window.location.href = '/'
     };
 
     return (
