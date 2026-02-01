@@ -5,6 +5,7 @@ import { AuthContext} from '../context/AuthContext';
 
 export default function AddProduct() {
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         description: '',
