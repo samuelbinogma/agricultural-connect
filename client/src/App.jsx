@@ -7,6 +7,7 @@ import RoleSelection from './pages/RoleSelection'
 import './styles/main.css'
 import Dashboard from './pages/Dashboard'
 import Browse from './pages/CustomerBrowse'
+import AddProduct from './pages/AddProduct'
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 <Route path='/register' element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/browse"    element={<Browse />} />
+                <Route path="/add-product" element={<AddProduct />} />
                 
                 <Route path='*' element={<div>404 - Page Not Found</div>} />
             </Routes>

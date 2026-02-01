@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Dashboard() {
     return (
         <div className="dashboard-page">
@@ -29,7 +31,7 @@ export default function Dashboard() {
                 <section className="quick-actions">
                     <h2>Quick Actions</h2>
                     <div className="actions-grid">
-                        <button className="action-btn primary">Add New Product</button>
+                        <Link to='/add-product'className="action-btn primary">Add New Product</Link>
                         <button className="action-btn">View Orders</button>
                         <button className="action-btn primary">Check Messages</button>
                         <button className="action-btn secondary">Update Farm Profile</button>

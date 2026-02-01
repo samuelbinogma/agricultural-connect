@@ -1,0 +1,112 @@
+.add-product-page {
+    padding: 2.5rem 0 4rem;
+    background: #f9fafb;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.page-header h1 {
+    font-size: 2.4rem;
+    color: #1a3c34;
+    margin-bottom: 0.6rem;
+}
+
+.page-header p {
+    color: #4b5563;
+    font-size: 1.1rem;
+}
+
+.add-product-form {
+    background: white;
+    border-radius: 12px;
+    padding: 2.2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.6rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2f855a;
+    box-shadow: 0 0 0 3px rgba(47,133,90,0.12);
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.form-row .form-group.half {
+    flex: 1;
+    min-width: 220px;
+}
+
+.price-input {
+    position: relative;
+}
+
+.currency {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #718096;
+    pointer-events: none;
+}
+
+.price-input input {
+    padding-left: 2.8rem;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1.1rem;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+}
+
+.error-message,
+.success-message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.8rem;
+    text-align: center;
+}
+
+.error-message {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.success-message {
+    background: #ecfdf5;
+    color: #065f46;
+}
