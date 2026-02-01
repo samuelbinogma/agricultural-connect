@@ -51,9 +51,8 @@ const productSchema = new mongoose.Schema({
     updatedAt: { type: Date, default: Date.now}
 });
 
-productSchema.pre('save', function(next) {
-    this.updatedAt = Date.now();
-    next();
-})
+productSchema.pre('save', async function() { 
+    this.updatedAt = Date.now(); 
+});
 
 module.exports = mongoose.model('Product', productSchema);

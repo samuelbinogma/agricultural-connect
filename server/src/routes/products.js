@@ -26,6 +26,7 @@ const authMiddleware = (req, res, next) => {
 };
 
 router.post('/', authMiddleware, async (req, res) => {
+    
     try {
         const productData = {
             ...req.body,
