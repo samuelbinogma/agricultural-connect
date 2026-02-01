@@ -1,4 +1,6 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { AuthContext} from '../context/AuthContext';
 
 export default function AddProduct() {
@@ -37,15 +39,23 @@ export default function AddProduct() {
         }
 
         try {
-            console.log('New product data:', {
-                ...formData,
-                farmerId: user?.id,
-                farmerName: user?.name,
-            });
+            const token = localStorage.getItem('token');
 
-            await new Promise(resolve => setTimeout(resolve, 1200));
+            const res = await axios.post(
+                'http://localhost:5000/api/products',
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    }
+                }
+            );
 
             setSuccess('Product added successfully!');
+
+            setTimeout(() => {
+                navigate('/dashboard')
+            }, 2000)
 
             setFormData({
                 name: '',
@@ -57,7 +67,10 @@ export default function AddProduct() {
                 imageUrl: '',
             });
         } catch (err) {
-            setError('Failed to add product. Please try again.');
+            console.error('Add product error:', err)
+            setError(
+                err.response?.data?.message || 'Failed to add product. Please try again.'
+            );
         } finally {
             setLaoding(false);
         }
@@ -136,11 +149,11 @@ export default function AddProduct() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="quantit">Available Qunatity</label>
+                        <label htmlFor="quantity">Available Qunatity</label>
                         <input 
-                            type="text"
-                            id="qunatity"
-                            name="qunatity"
+                            type="number"
+                            id="quantity"
+                            name="quantity"
                             onChange={handleChange}
                             value={formData.quantity}
                             placeholder="e.g. 50"
@@ -172,6 +185,7 @@ export default function AddProduct() {
                         type="submit"
                         className="btn btn-primary submit-btn"
                         disabled={loading}
+                        onSubmit={handleSubmit}
                     >
                         {loading ? 'Adding Product...' : 'Add Product'}
                     </button>
