@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products')
 
 const app = express();
+app.use('/uploads', express.static('public/uploads'));
 
 app.use(cors());
 app.use(express.json());
