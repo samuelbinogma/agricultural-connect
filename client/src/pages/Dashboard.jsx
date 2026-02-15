@@ -13,8 +13,11 @@ export default function Dashboard() {
         const fetchMyProducts = async () => {
             try {
                 const token = localStorage.getItem('token');
-                if (!token) throw new Error('Not logge in');
-
+                if (!token) {
+                    setError('Please login as a farmwer to see your products');
+                    setLoading(false);
+                    return;
+                }
                 const res = await axios.get('http://localhost:5000/api/products/my-products', {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -24,7 +27,13 @@ export default function Dashboard() {
                 setProducts(res.data.products || []);
             } catch (err) {
                 console.error('Fetch products error:', err);
-                setError(err.response?.data?.message || 'Failed to laod products');
+                if (err.response?.status === 401) {
+                    setError('Session expired. Please login again')
+                } else if (err.response?.status === 403) {
+                    setError('Only farmers can view this page.');
+                } else {
+                    setError('Failed to load products')
+                }
             } finally {
                 setLoading(false)
             }
@@ -32,7 +41,7 @@ export default function Dashboard() {
 
         if (user?.role === 'farmer') {
             fetchMyProducts();
-        }
+        } 
     }, [user]);
 
     return (
