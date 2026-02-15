@@ -18,7 +18,8 @@ export default function AddProduct() {
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [loading, setLaoding] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null)
 
     const handleChange = (e) => {
         setFormData({
@@ -27,27 +28,57 @@ export default function AddProduct() {
         });
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            console.log('Selected file:', file.name, file.size, file.type);
+            setSelectedFile(file);
+        } else {
+            console.log('No file selected');
+            setSelectedFile(null)
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess('');
-        setLaoding(true);
+        setLoading(true);
 
         if (!formData.name || !formData.price || !formData.quantity) {
             setError('Please fill in all required fields');
-            setLaoding(false);
+            setLoading(false);
             return;
         }
 
         try {
             const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('Not logged in');
+            }
+
+            const formDataToSend = new FormData();
+
+            formDataToSend.append('name', formData.name);
+            formDataToSend.append('description', formData.description);
+            formDataToSend.append('price', formData.price);
+            formDataToSend.append('unit', formData.unit);
+            formDataToSend.append('quantity', formData.quantity);
+            formDataToSend.append('category', formData.category);
+
+            if (selectedFile) {
+                formDataToSend.append('image', selectedFile)
+                console.log('File being sent:', selectedFile.name, selectedFile.size)
+            } else {
+                console.log('No file selected');
+            }
 
             const res = await axios.post(
                 'http://localhost:5000/api/products',
-                formData,
+                formDataToSend,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
@@ -67,13 +98,14 @@ export default function AddProduct() {
                 category: 'vegetables',
                 imageUrl: '',
             });
+            setSelectedFile(null);
         } catch (err) {
             console.error('Add product error:', err)
             setError(
                 err.response?.data?.message || 'Failed to add product. Please try again.'
             );
         } finally {
-            setLaoding(false);
+            setLoading(false);
         }
     };
 
@@ -174,12 +206,17 @@ export default function AddProduct() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="imageURL">Product Image URL (optional)</label>
-                        <input type="url" name="imageURL" id="imageURL" 
-                            value={formData.imageUrl}
-                            onChange={handleChange}
-                            placeholder="https://example.com/tomatoes.jpg"
+                        <label htmlFor="image">Product Image URL (optional)</label>
+                        <input 
+                            type="file" 
+                            name="image" 
+                            id="image" 
+                            accept="image/*"
+                            onChange={handleFileChange}
                         />
+                        {selectedFile && (
+                            <p className="file-name">Selected: {selectedFile.name} ({(selectedFile.size / 1024).toFixed(1)} KB)</p>
+                        )}
                     </div>
 
                     <button

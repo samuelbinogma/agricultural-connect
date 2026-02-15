@@ -51,6 +51,22 @@ const authMiddleware = (req, res, next) => {
 };
 
 router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
+
+    console.log('--- NEW PRODUCT UPLOAD REQUEST ---');
+    console.log('Body fields:', req.body);
+    console.log('File received?', !!req.file);
+    if (req.file) {
+        console.log('File details:', {
+        originalname: req.file.originalname,
+        filename: req.file.filename,
+        path: req.file.path,
+        size: req.file.size,
+        mimetype: req.file.mimetype
+        });
+    } else {
+        console.log('No file uploaded or multer failed');
+    }
+
     try {
         console.log('File received:', req.file);
         console.log('Body fields:', req.body);
@@ -62,6 +78,9 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
 
         if (req.file) {
             productData.imageUrl = `/uploads/${req.file.filename}`;
+            console.log('Saving imageUrl:', productData.imageUrl);
+        } else {
+            console.log('No imageUrl added (no file)');
         }
 
         const product = new Product(productData);
