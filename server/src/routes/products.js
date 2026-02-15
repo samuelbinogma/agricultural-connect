@@ -99,4 +99,27 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
     }
 });
 
+router.get('/my-products', authMiddleware, async (req, res) => {
+    try {
+        console.log('Fetching my products for farmer:', req.user.id);
+
+        const products = await Product.find({ farmer: req.user.id })
+            .sort({ createdAt: -1 })
+            .limit(20);
+        
+        console.log(`Found ${products.length} products`);
+
+        res.json({
+            message: 'My products fetched successfully',
+            products
+        });
+    } catch (error) {
+        console.error('Get my products error:', error);
+        res.status(500).json({
+            message: 'Server error while fetching products',
+            error: error.message
+        });
+    }
+});
+
 module.exports = router;
