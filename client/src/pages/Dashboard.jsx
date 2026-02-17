@@ -44,6 +44,29 @@ export default function Dashboard() {
         } 
     }, [user]);
 
+    const handleDelete = async (productId) => {
+        if (!window.confirm('Are you sure you want to delete this product')) {
+            return
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.delete(`http://localhost:5000/api/products/${productId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            setProducts(products.filter(p => p._id !== productId));
+            alert('Product deleted successfully');
+        } catch (err) {
+            console.error('Delete error:', err);
+            alert('Failed to delete product');
+        }
+    };
+
+    const handleEdit = (product) => {
+        alert(`Edit mode for: ${product.name}\n(Full edit form coming soon)`);
+    };
+
     return (
         <div className="dashboard-page">
             <div className="container">
@@ -120,6 +143,20 @@ export default function Dashboard() {
                                     </p>
                                     <p className="stock">Stock: {product.quantity} {product.unit}</p>
                                     <p className="category">{product.category}</p>
+                                </div>
+
+                                <div className="product-actions">
+                                    <button
+                                        className="btn small edit"
+                                        onClick={() => handleEdit(product)}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="btn small delete"
+                                        onClick={() => handleDelete(product._id)}>
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
                         ))}
