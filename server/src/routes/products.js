@@ -145,4 +145,31 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     }
 });
 
+// PATCH /update an existing product (only product owners can update)
+router.patch('/:id', authMiddleware, async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not Found' });
+        }
+
+        if (product.farmer.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Not authorized to update this product' });
+        }
+
+        // Update only fields sent in the request body
+        Object.assign(product, req.body);
+        await product.save();
+
+        res.json({
+            message: 'Product updated successfully',
+            product
+        });
+    } catch (error) {
+        console.error('Update product error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
 module.exports = router;
