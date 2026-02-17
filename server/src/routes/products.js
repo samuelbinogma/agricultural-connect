@@ -99,6 +99,7 @@ router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
     }
 });
 
+// GET Get only the farmer's products when logged-in
 router.get('/my-products', authMiddleware, async (req, res) => {
     try {
         console.log('Fetching my products for farmer:', req.user.id);
@@ -119,6 +120,28 @@ router.get('/my-products', authMiddleware, async (req, res) => {
             message: 'Server error while fetching products',
             error: error.message
         });
+    }
+});
+
+
+// DELETE /Delete a product (only product owners can delete)
+router.delete('/:id', authMiddleware, async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found'});
+        }
+            
+        if (product.farmer.toString() !== req.user.id) {
+            return res.status(403).json({ message: 'Not authorized to delete this product'})
+        }
+
+        await product.deleteOne();
+        res.json({ message: 'Product deleted successfully'});
+    } catch (error) {
+        console.error('Delete product error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 });
 
