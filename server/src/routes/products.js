@@ -172,4 +172,20 @@ router.patch('/:id', authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/', async (req, res) => {
+    try {
+        const products = await Product.find()
+            .sort({ createdAt: -1 })
+            .limit(12)
+            .populate('farmer', 'name');
+        
+        res.join({
+            message: 'Products fetched',
+            products
+        });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 module.exports = router;
