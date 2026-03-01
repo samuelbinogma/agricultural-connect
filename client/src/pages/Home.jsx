@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { leaf, DollarSign, MessageSquare, Leaf} from 'lucide-react';
+import { Leaf, DollarSign, MessageSquare } from 'lucide-react';
 
 export default function Home() {
     const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -9,7 +9,7 @@ export default function Home() {
     const [error, setError] = useState('')
 
     useEffect(() => {
-        const fetchfeatured = async () => {
+        const fetchFeatured = async () => {
             try {
                 const res = await axios.get('http://localhost:5000/api/products');
                 setFeaturedProducts(res.data.products.slice(0, 6));
@@ -20,7 +20,7 @@ export default function Home() {
             }
         };
 
-        fetchfeatured();
+        fetchFeatured();
     }, []);
 
     return (
