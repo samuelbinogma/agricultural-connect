@@ -11,8 +11,6 @@ export default function Login() {
     return (
         <AuthForm 
             type="login" 
-            // You can pass role from URL/query later
-            // role="farmer" or "customer"
             onSubmit={handleLogin} 
         />
     );
