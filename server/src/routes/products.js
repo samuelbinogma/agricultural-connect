@@ -174,16 +174,23 @@ router.patch('/:id', authMiddleware, async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
+        console.log('GET /api/products requested - fetching featured products');
+
         const products = await Product.find()
             .sort({ createdAt: -1 })
             .limit(12)
-            .populate('farmer', 'name');
+
+        console.log(`Successfully found ${products.length} products`)
         
-        res.join({
+        res.json({
             message: 'Products fetched',
             products
         });
-    } catch (err) {
+    } catch (error) {
+        console.error('Error fetching products:', {
+            message: error.message,
+            stack: error.stack
+        });
         res.status(500).json({ message: 'Server error' });
     }
 });
