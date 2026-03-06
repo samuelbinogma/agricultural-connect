@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const messageRoutes = require('./routes/messages')
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products')
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes)
+app.use('/api/messages', messageRoutes)
 
 app.get('/', (req, res) => res.send('Agricultural Connect API is running'));
 

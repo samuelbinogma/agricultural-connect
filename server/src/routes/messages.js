@@ -31,3 +31,30 @@ router.post('/', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 }); 
+
+
+// GET /api/messages/:farmerId – Get chat history with a farmer
+router.get('/:farmerId', async (req, res) => {
+    try {
+        const messages = await Message.find({
+            $or: [
+                { sender: req.user.id, receiver: req.params.farmerId },
+                { sender: req.params.farmerId, receiver: req.user.id}
+            ]
+        })
+
+            .sort({ createdAt: 1})
+            .populate('sender', 'name')
+            .populate('receiver', 'name');
+        
+            res.json({
+                message: 'Chat history fetched',
+                data: messages
+            });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error'});
+    }
+});
+
+module.exports = router;
